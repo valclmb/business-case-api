@@ -6,3 +6,9 @@ api_platform:
     json: ["application/merge-patch+json"]
   swagger:
     versions: [3]
+  collection:
+      pagination:
+        page_parameter_name: _page
+  defaults:
+    pagination_item_per_page : 3
+

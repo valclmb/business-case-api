@@ -14,8 +14,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
  *
  * @ApiResource(
+ *     attributes={"order"={"id":"DESC"}},
  *     normalizationContext={"groups"={"annonce:read"}},
- *     denormalizationContext={"groups"={"annonce:write"}},
+ *     denormalizationContext={"groups"={"annonce:write"}}
  *
  * )
  */
@@ -60,11 +61,11 @@ class Annonce
     private $description;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=20)
      *
      * @Groups({"annonce:read","annonce:write"})
      */
-    private $plaqueOrigine;
+    private $prix;
 
     /**
      * @ORM\Column(type="integer")
@@ -90,12 +91,6 @@ class Annonce
      */
     private $etatVehicule;
 
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     *
-     * @Groups({"annonce:read","annonce:write"})
-     */
-    private $etatVehicule2;
 
     /**
      * @ORM\ManyToOne(targetEntity=Modele::class, inversedBy="annonces")
@@ -119,13 +114,9 @@ class Annonce
     /**
      * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="annonce", orphanRemoval=true)
      *
+     *@Groups({"annonce:read","annonce:write"})
      */
     private $photos;
-
-
-
-
-
 
 
     public function __construct()
@@ -190,14 +181,14 @@ class Annonce
         return $this;
     }
 
-    public function getPlaqueOrigine(): ?bool
+    public function getPrix(): ?string
     {
-        return $this->plaqueOrigine;
+        return $this->prix;
     }
 
-    public function setPlaqueOrigine(?bool $plaqueOrigine): self
+    public function setPrix(?string $prix): self
     {
-        $this->plaqueOrigine = $plaqueOrigine;
+        $this->prix = $prix;
 
         return $this;
     }
@@ -268,17 +259,6 @@ class Annonce
         return $this;
     }
 
-    public function getEtatVehicule2(): ?string
-    {
-        return $this->etatVehicule2;
-    }
-
-    public function setEtatVehicule2(?string $etatVehicule2): self
-    {
-        $this->etatVehicule2 = $etatVehicule2;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Photo[]

@@ -26,7 +26,7 @@ class Marque
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      *
-     * @Groups({"marque:read","modele:read","annonce:read"})
+     * @Groups({"marque:read","modele:write"})
      */
     private $id;
 
@@ -42,6 +42,7 @@ class Marque
      * @ORM\OneToMany(targetEntity=Modele::class, mappedBy="marque", orphanRemoval=true)
      *
      * @Groups("marque:read")
+     *
      */
     private $modeles;
 

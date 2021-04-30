@@ -9,21 +9,14 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
+
+//={"security"="is_granted('ROLE_ADMIN')"}
 /**
  * @ORM\Entity(repositoryClass=GarageRepository::class)
  *
  *  * @ApiResource(
  *     normalizationContext={"groups"={"garage:read"}},
- *     denormalizationContext={"groups"={"garage:write"}},
- *     attributes={"security"="is_granted('ROLE_USER')"},
- *     collectionOperations={
- *         "get",
- *         "post"={"security"="is_granted('ROLE_USER')"}
- *     },
- *     itemOperations={
- *         "get",
- *         "put"={"security"="is_granted('ROLE_USER') or object.owner == user"},
- *     }
+ *     denormalizationContext={"groups"={"garage:write"}}
  * )
  *
  */
@@ -34,19 +27,19 @@ class Garage
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      *
-     * @Groups({"garage:read","user:read","annonce:read","annonce:write"})
+     * @Groups({"garage:read","annonce:write","user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
-     * @Groups({"garage:read", "garage:write","user:read","annonce:read"})
+     * @Groups({"garage:read", "garage:write","annonce:read"})
      */
     private $nomGarage;
 
     /**
      * @ORM\Column(type="string", length=14, nullable=true)
-     * @Groups({"garage:read", "garage:write","annonce:read"})
+     * @Groups({"garage:read", "garage:write"})
      */
     private $numTel;
 
@@ -83,16 +76,16 @@ class Garage
     private $ville;
 
     /**
-     * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="garage")
+     * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="garage", orphanRemoval=true)
      *
-     * @Groups("garage:read")
      */
     private $annonces;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="garages")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"garage:read","garage:write"})
+     *
+     *  @Groups({"garage:read", "garage:write"})
      */
     private $user;
 
@@ -104,7 +97,6 @@ class Garage
         $this->adresses = new ArrayCollection();
         $this->user = new ArrayCollection();
         $this->annonces = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int

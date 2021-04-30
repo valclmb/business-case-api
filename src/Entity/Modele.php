@@ -25,34 +25,33 @@ class Modele
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      *
-     * @Groups({"modele:read","marque:read","annonce:read","annonce:write"})
+     * @Groups({"modele:read","annonce:write","marque:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
      *
-     * @Groups({"modele:read", "modele:write", "marque:read", "annonce:read"})
+     * @Groups({"modele:read", "modele:write", "annonce:read","marque:read"})
      *
      */
     private $nomModele;
-
-
-    /**
-     * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="modele")
-     *
-     *
-     */
-    private $annonces;
 
     /**
      * @ORM\ManyToOne(targetEntity=Marque::class, inversedBy="modeles")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Groups({"modele:read","annonce:read"})
+     * @Groups({"modele:read","modele:write","annonce:read"})
      *
      */
     private $marque;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="modele", orphanRemoval=true)
+     *
+     */
+    private $annonces;
+
 
 
     public function __construct()

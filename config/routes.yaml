@@ -13,3 +13,8 @@ api:
 login_check:
     path: /login_check
     methods: [POST]
+
+get_user:
+    path: api/user
+    controller: App\Controller\AuthController::getCompleteUser
+    methods: [GET]

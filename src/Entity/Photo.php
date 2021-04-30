@@ -26,17 +26,9 @@ class Photo
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=500)
+     * @ORM\Column(type="string", length=500, nullable = true)
      *
-     * @Groups({"photo:read","photo:write","annonce:read"})
-     *
-     */
-    private $cheminPrincipal;
-
-    /**
-     * @ORM\Column(type="string", length=500)
-     *
-     * @Groups({"photo:read","photo:write","annonce:read"})
+     * @Groups({"photo:read","photo:write","annonce:read","annonce:write"})
      */
     private $chemin;
 
@@ -51,17 +43,7 @@ class Photo
         return $this->id;
     }
 
-    public function getCheminPrincipal(): ?string
-    {
-        return $this->cheminPrincipal;
-    }
 
-    public function setCheminPrincipal(string $cheminPrincipal): self
-    {
-        $this->cheminPrincipal = $cheminPrincipal;
-
-        return $this;
-    }
 
     public function getChemin(): ?string
     {

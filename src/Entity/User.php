@@ -33,14 +33,21 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=50, unique=true)
      * @Groups({"user:read", "user:write"})
+     */
+    private $username;
+
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true, unique=true)
+     * @Groups({"user:read", "user:write", "garage:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
-     * @Groups("user:read")
+     * @Groups({"user:read","user:write"})
      */
     private $roles = [];
 
@@ -51,28 +58,29 @@ class User implements UserInterface
      */
     private $password;
 
-//    /**
-//     * @Groups("user:write")
-//     *
-//     * @SerializedName("plainPassword")
-//     */
-//    private $plainPassword;
-
 
     /**
-     * @ORM\Column(type="string", length=32, nullable=true)
-     * @Groups({"user:read", "user:write"})
+     * @ORM\Column(type="string", length=50)
+     *
+     * @Groups({"user:read", "user:write","garage:read"})
+     *
+     */
+    private $nom;
+
+    /**
+     * @ORM\Column(type="string", length=32)
+     * @Groups({"user:read", "user:write","garage:read"})
      */
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=14, nullable=true)
+     * @ORM\Column(type="string", length=14)
      * @Groups({"user:read", "user:write"})
      */
     private $numTel;
 
     /**
-     * @ORM\Column(type="string", length=14, nullable=true)
+     * @ORM\Column(type="string", length=14)
      * @Groups({"user:read", "user:write"})
      */
     private $numeroSiret;
@@ -80,17 +88,13 @@ class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Garage::class, mappedBy="user", orphanRemoval=true)
      *
-     * @Groups("user:read")
+     * @Groups({"user:read", "user:write"})
      */
     private $garages;
 
-    /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     *
-     * @Groups({"user:read", "user:write"})
-     *
-     */
-    private $nom;
+
+
+
 
     public function __construct()
     {
@@ -122,7 +126,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->username;
     }
 
     /**
@@ -132,8 +136,6 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
         return array_unique($roles);
     }
 
@@ -267,6 +269,13 @@ class User implements UserInterface
     public function setNom(?string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
 
         return $this;
     }
